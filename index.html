@@ -1226,7 +1226,7 @@ section {
 
 </head>
 <body>
-<audio id="siteMusic" preload="auto" loop playsinline src="music.mp3"></audio>
+<audio id="siteMusic" preload="auto" loop playsinline webkit-playsinline="true" src="./music.mp3"></audio>
 <button class="music-toggle" aria-label="Muzyka">♪</button>
 <div class="light-dust" aria-hidden="true"></div>
 <div id="transitionPulse"></div>
@@ -1236,42 +1236,9 @@ section {
 <section class="opening active">
   <h1 class="title">TY. CIĄG DALSZY.</h1>
   <p class="subtitle"><em><span class="opening-line">Nie wiadomo</span><span class="opening-line">jeszcze, co się</span><span class="opening-line">w nim wydarzy.</span></em></p>
-  <div class="start">KLIKNIJ, ABY ZACZĄĆ<span>↓</span></div>
+  <div class="start" onclick="(function(){var a=document.getElementById('siteMusic');if(!a)return;a.muted=false;a.volume=0.72;var p=a.play();if(p&&p.catch)p.catch(function(){});})()">KLIKNIJ, ABY ZACZĄĆ<span>↓</span></div>
 
-  <script id="openingMusic">
-  (() => {
-    const start = document.querySelector('.start');
-    const audio = document.getElementById('siteMusic');
-    if (!start || !audio) return;
 
-    audio.loop = true;
-    audio.preload = 'auto';
-    audio.playsInline = true;
-    audio.volume = 0.72;
-    audio.muted = false;
-
-    let started = false;
-    function playMusic(e) {
-      if (started) return;
-      started = true;
-      try {
-        audio.muted = false;
-        audio.volume = 0.72;
-        const promise = audio.play();
-        if (promise && promise.catch) {
-          promise.catch(() => { started = false; });
-        }
-      } catch (_) {
-        started = false;
-      }
-    }
-
-    // Bound directly to the opening CTA so Chrome/Android sees a real user gesture.
-    start.addEventListener('click', playMusic, false);
-    start.addEventListener('pointerup', playMusic, false);
-    start.addEventListener('touchend', playMusic, false);
-  })();
-  </script>
 </section>
 
 <section class="dark">
