@@ -1237,6 +1237,41 @@ section {
   <h1 class="title">TY. CIĄG DALSZY.</h1>
   <p class="subtitle"><em><span class="opening-line">Nie wiadomo</span><span class="opening-line">jeszcze, co się</span><span class="opening-line">w nim wydarzy.</span></em></p>
   <div class="start">KLIKNIJ, ABY ZACZĄĆ<span>↓</span></div>
+
+  <script id="openingMusic">
+  (() => {
+    const start = document.querySelector('.start');
+    const audio = document.getElementById('siteMusic');
+    if (!start || !audio) return;
+
+    audio.loop = true;
+    audio.preload = 'auto';
+    audio.playsInline = true;
+    audio.volume = 0.72;
+    audio.muted = false;
+
+    let started = false;
+    function playMusic(e) {
+      if (started) return;
+      started = true;
+      try {
+        audio.muted = false;
+        audio.volume = 0.72;
+        const promise = audio.play();
+        if (promise && promise.catch) {
+          promise.catch(() => { started = false; });
+        }
+      } catch (_) {
+        started = false;
+      }
+    }
+
+    // Bound directly to the opening CTA so Chrome/Android sees a real user gesture.
+    start.addEventListener('click', playMusic, false);
+    start.addEventListener('pointerup', playMusic, false);
+    start.addEventListener('touchend', playMusic, false);
+  })();
+  </script>
 </section>
 
 <section class="dark">
@@ -1455,13 +1490,25 @@ section {
     }
   });
 
-  /* Mały przycisk muzyki: przygotowany, ale nie uruchamia niczego,
-     jeśli plik audio nie jest podpięty. */
+  /* Mały przycisk muzyki — pauza / wznowienie. */
   const music=document.querySelector('.music-toggle');
-  if(music) music.addEventListener('click',function(){
-    this.classList.toggle('on');
-    this.textContent=this.classList.contains('on')?'♫':'♪';
-  });
+  const audio=document.getElementById('siteMusic');
+  if(music && audio){
+    music.addEventListener('click',function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      if(audio.paused){
+        audio.muted=false;
+        audio.play().catch(()=>{});
+        this.classList.add('on');
+        this.textContent='♫';
+      }else{
+        audio.pause();
+        this.classList.remove('on');
+        this.textContent='♪';
+      }
+    });
+  }
 })();
 </script>
 
@@ -1626,37 +1673,5 @@ section {
 
 
 
-<script id="musicOnly">
-(function(){
-  const audio = document.getElementById("siteMusic");
-  if (!audio) return;
-  audio.loop = true;
-  audio.volume = 0.72;
-  audio.muted = false;
-
-  function startMusic(){
-    try {
-      audio.muted = false;
-      const p = audio.play();
-      if (p && typeof p.catch === "function") p.catch(function(){
-        // Chrome may reject a play() call until the next direct user gesture.
-      });
-    } catch(e) {}
-  }
-
-  // The first tap/click on the opening screen is a real user gesture.
-  document.addEventListener("pointerdown", function(e){
-    if (e.target.closest(".start")) startMusic();
-  }, true);
-
-  document.addEventListener("touchstart", function(e){
-    if (e.target.closest(".start")) startMusic();
-  }, true);
-
-  document.addEventListener("click", function(e){
-    if (e.target.closest(".start")) startMusic();
-  }, true);
-})();
-</script>
 </body>
 </html>
