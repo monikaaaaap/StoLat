@@ -1308,19 +1308,29 @@ section {
 </style>
 
 
-<style id="ticket-parenthetical-background">
-/* Mocniejszy kontrast nawiasów: półprzezroczyste ciemne tło bez zmiany układu biletu. */
-#ticketPage .ticket-meta > div > em,
-#ticketPage .ticket-important > em {
-  display: inline-block !important;
+<style id="ticket-parenthetical-maximum-contrast">
+/* Nawiasy: czytelność ponad tłem zdjęcia, ale nadal elegancko. */
+#ticketPage .ticket-meta div em {
   color: #ffffff !important;
   opacity: 1 !important;
-  background: rgba(10, 10, 10, 0.58) !important;
-  padding: 3px 8px !important;
-  border-radius: 5px !important;
-  text-shadow: 0 1px 4px rgba(0,0,0,.9) !important;
-  box-decoration-break: clone;
-  -webkit-box-decoration-break: clone;
+  background: rgba(0, 0, 0, 0.68) !important;
+  padding: 3px 9px !important;
+  border-radius: 4px !important;
+  display: inline-block !important;
+  line-height: 1.5 !important;
+  text-shadow: none !important;
+  box-decoration-break: clone !important;
+  -webkit-box-decoration-break: clone !important;
+}
+#ticketPage .ticket-important em {
+  color: #ffffff !important;
+  opacity: 1 !important;
+  background: rgba(0, 0, 0, 0.68) !important;
+  padding: 3px 9px !important;
+  border-radius: 4px !important;
+  display: inline-block !important;
+  line-height: 1.5 !important;
+  text-shadow: none !important;
 }
 </style>
 
